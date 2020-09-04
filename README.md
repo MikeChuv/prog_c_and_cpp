@@ -1,3 +1,3 @@
 # Лабораторные работы по курсу "Языки и методы программирования" 3 семестр ПМИИ
 
-Все лабораторные работы с [http://natalia.appmat.ru/c&c++/index.php?sezione=compiti](сайта Чибизовой Н.В.)
+Все лабораторные работы с [http://natalia.appmat.ru/c&c++/index.php?sezione=compiti](сайта) Чибизовой Н.В.
