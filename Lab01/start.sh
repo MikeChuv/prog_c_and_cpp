@@ -1,3 +1,3 @@
-gcc source.cpp
-./a.out a.txt b.txt c.txt
+gcc main.cpp
+./a.out
 echo Exit code: $?
