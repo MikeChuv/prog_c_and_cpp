@@ -7,7 +7,7 @@ const int nmax = 10;
 
 // ввод массива
 int array_input(int *arr_size, double arr[]);
-// поиск минимумов, больших заданного числа
+// количество элементов, меньших заданного числа
 int count(double arr[], int arr_ize, double mynumber);
  
 
@@ -17,9 +17,11 @@ int main(int argc, char *argv[]){
 	double a[nmax], b[nmax], c[nmax];
 	int am_a, am_b, am_c, max;
 	double mynumber;
-	int size_a, size_b, size_c;
-	int main_flag = 0;
+	int size_a, size_b, size_c; // array sizes
+	int main_flag = 0; // err flag (exit code)
 
+
+	// number entry
 	printf("Введите число: ");
 	if (scanf("%lf", &mynumber) < 1){
 		printf("Неверный формат\n");
@@ -27,19 +29,22 @@ int main(int argc, char *argv[]){
 	}
 
 
+	// array entry and checking if values are valid
+	if (!main_flag && !array_input(&size_a, a) && !array_input(&size_b, b) && !array_input(&size_c, c)){
 
-	if (!main_flag && array_input(&size_a, a) && array_input(&size_b, b) && array_input(&size_c, c)){
-
+		// counting numbers for each array
 		am_a = count(a, size_a, mynumber);
 		am_b = count(b, size_b, mynumber);
 		am_c = count(c, size_c, mynumber);
 	
 		printf("a: %d \nb: %d \nc: %d \n", am_a, am_b, am_c);
 
+		// finding max of counted values
 		max = am_a;
 		if (am_b > max) max = am_b;
 		if (am_c > max) max = am_c;
 
+		// output
 		if (max == 0){
 			printf("В массивах нет чисел, меньше (%5.2lf)\n", mynumber);	
 		}
@@ -69,27 +74,32 @@ int main(int argc, char *argv[]){
 
 int array_input(int *arr_size, double arr[]){
 
-	int flag;
+	int flag = 0; // err flag
+
+	// array size entry
 	printf("Введите размер массива: ");
 	if (scanf("%d", arr_size) < 1){
-		flag = 0;
+		flag = 1;
 		printf("Неверный формат\n");
 	}	
 	else{
 		if (*arr_size < 0 || *arr_size > nmax){
 			printf("Неверно задан размер массива. Допустимо от 1 до %d\n", nmax);
-			flag = 0;
+			flag = 1;
 		}
 		else{
-			int loop_flag = 0;
-			//  не структурно наверное
-			for (int i = 0; (i < *arr_size) && (!loop_flag); i++){
+			//  не структурно наверное, но легко переписать на 
+			//  int i = 0;
+			//  while((i < *arr_size) && !flag){
+			//  	//impl
+			//  	i++;
+			//  }
+			for (int i = 0; (i < *arr_size) && !flag; i++){
 				if(scanf("%lf", &arr[i]) < 1){
-					loop_flag = 1;
+					flag = 1;
 					printf("Неверный формат\n");
 				}
 			}
-			flag = !loop_flag;
 		}
 	}
 	return flag;
@@ -98,7 +108,7 @@ int array_input(int *arr_size, double arr[]){
 
 
 int count(double arr[], int arr_size, double mynumber){
-	int am = 0;
+	int am = 0; //counter
 
 	for (int i = 0; i < arr_size; i++){
 		if(arr[i] < mynumber){
@@ -106,6 +116,9 @@ int count(double arr[], int arr_size, double mynumber){
 		}
 	}
 
-
 	return am;
 }
+
+
+
+
