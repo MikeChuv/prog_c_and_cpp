@@ -6,11 +6,11 @@ const int nmax = 10;
 
 
 // ввод массива
-int array_input(int *arr_size, double arr[]);
+int array_input(int& arr_size, double arr[]);
 // количество элементов, меньших заданного числа
-int count(double arr[], int arr_ize, double mynumber);
- 
-
+int count(double arr[], int arr_size, double mynumber);
+// вывод массива
+void print_array(int arr_size, double arr[], char name);
 
 
 int main(int argc, char *argv[]){
@@ -30,7 +30,11 @@ int main(int argc, char *argv[]){
 
 
 	// array entry and checking if values are valid
-	if (!main_flag && !array_input(&size_a, a) && !array_input(&size_b, b) && !array_input(&size_c, c)){
+	if (!main_flag && !array_input(size_a, a) && !array_input(size_b, b) && !array_input(size_c, c)){
+
+		print_array(size_a, a, 'A');
+		print_array(size_b, b, 'B');
+		print_array(size_c, c, 'C');
 
 		// counting numbers for each array
 		am_a = count(a, size_a, mynumber);
@@ -49,16 +53,28 @@ int main(int argc, char *argv[]){
 			printf("В массивах нет чисел, меньше (%5.2lf)\n", mynumber);	
 		}
 		else{
-			if (am_a == max){
+			if (am_a == max && am_b == max && am_c == max){	
+				printf("Массивы А, B, C, кол-во: (%d)\n", max);
+			}
+			else if (am_a == max && am_b == max){	
+				printf("Массивы А и B, кол-во: (%d)\n", max);
+			}
+			else if (am_a == max && am_c == max){	
+				printf("Массивы A и C, кол-во: (%d)\n", max);
+			}
+			else if (am_b == max && am_c == max){	
+				printf("Массивы B и C, кол-во: (%d)\n", max);
+			}
+			else if (am_a == max){
 				printf("Массив A, кол-во: (%d)\n", max);
 			}	
-			if (am_b == max){
+			else if (am_b == max){
 				printf("Массив B, кол-во: (%d)\n", max);
 			}
-			if (am_c == max){
+			else if (am_c == max){
 				printf("Массив C, кол-во: (%d)\n", max);
 			}
-
+						
 		}
 		main_flag = 0;
 	}
@@ -72,29 +88,23 @@ int main(int argc, char *argv[]){
 
 
 
-int array_input(int *arr_size, double arr[]){
+int array_input(int& arr_size, double arr[]){
 
 	int flag = 0; // err flag
 
 	// array size entry
 	printf("Введите размер массива: ");
-	if (scanf("%d", arr_size) < 1){
+	if (scanf("%d", &arr_size) < 1){
 		flag = 1;
 		printf("Неверный формат\n");
 	}	
 	else{
-		if (*arr_size < 0 || *arr_size > nmax){
+		if (arr_size < 0 || arr_size > nmax){
 			printf("Неверно задан размер массива. Допустимо от 1 до %d\n", nmax);
 			flag = 1;
 		}
 		else{
-			//  не структурно наверное, но легко переписать на 
-			//  int i = 0;
-			//  while((i < *arr_size) && !flag){
-			//  	//impl
-			//  	i++;
-			//  }
-			for (int i = 0; (i < *arr_size) && !flag; i++){
+			for (int i = 0; (i < arr_size) && !flag; i++){
 				if(scanf("%lf", &arr[i]) < 1){
 					flag = 1;
 					printf("Неверный формат\n");
@@ -120,5 +130,12 @@ int count(double arr[], int arr_size, double mynumber){
 }
 
 
-
+void print_array(int arr_size, double arr[], char name){
+	printf("Array %c: \n", name);
+	for(int i = 0; i < arr_size; i++){
+		printf("%5.2lf", arr[i]);
+	}
+	printf("\n");
+	return;
+}
 
