@@ -3,6 +3,8 @@
 
 const int nmax = 10;
 
+
+// static matrix input
 int input(double arr[][nmax], int& rows, int& colls, char* filename){
 
 	FILE* input_file;
@@ -33,6 +35,7 @@ int input(double arr[][nmax], int& rows, int& colls, char* filename){
 		}
 		fclose(input_file);
 	}
+	
 
 	return flag;
 
@@ -49,10 +52,12 @@ void print_static_matrix(double arr[][nmax], int rows, int colls, char* filename
 		}
 		fprintf(output_file, "\n");
 	}
+	fprintf(output_file, "\n");
 	fclose(output_file);
 	return;
 }
 
+// prints 1d array (used for both static and dynamic implementation)
 void print_vector(int vec[], int length, char* filename){
 	FILE* output_file;
 	output_file = fopen(filename, "a");
@@ -65,6 +70,20 @@ void print_vector(int vec[], int length, char* filename){
 	return;
 }
 
+
+// prints float point number with a message to a file (useb for both static and dynamic implementation) 
+void message_with_double(double number,const char* message, char* filename){
+	FILE* output_file;
+	output_file = fopen(filename, "a");
+	fprintf(output_file, "%s %5.2lf\n", message, number);
+	fclose(output_file);
+}
+
+
+
+
+// ----- Finding max value -----
+//
 
 double static_max_all(double arr[][nmax], int rows, int colls){
 	double max = arr[0][0];
@@ -101,6 +120,12 @@ double static_max_rows(double arr[][nmax], int rows, int colls){
 }
 
 
+
+// ----- Counting positives
+//
+
+
+
 void static_positive_count_all(double arr[][nmax], int rows, int colls, int vec[]){
 	for(int i = 0; i < rows; i++){
 		int counter = 0;
@@ -126,10 +151,15 @@ static int positive_in_row(double vec[], int colls){
 	return counter;
 }
 
-void static_positive_count_rows(double arr[][nmax], int rows, int colls, int vec[]){
+void static_positive_count_rows(double arr[][nmax], int rows, int colls, char* filename){
+	FILE* output_file;
+	output_file = fopen(filename, "a");
+	fprintf(output_file, "\n");
 	for(int i = 0; i < rows; i++){
-		vec[i] = positive_in_row(arr[i], colls);
+		int counted = positive_in_row(arr[i], colls);
+		fprintf(output_file, "Positives in row %d : %2d\n", i, counted); 
 	}
+	fclose(output_file);
 	return;
 }
 

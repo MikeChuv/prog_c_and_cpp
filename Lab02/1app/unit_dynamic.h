@@ -11,8 +11,9 @@ double dynamic_max_rows(double** arr, int rows, int colls);
 
 void dynamic_positive_count_all(double** arr, int rows, int colls, int vec[]);
 
-void dynamic_positive_count_rows(double** arr, int rows, int colls, int vec[]);
+void dynamic_positive_count_rows(double** arr, int rows, int colls, char* filename);
 
+void free_memory(double**& arr, int rows, int colls);
 
 
 

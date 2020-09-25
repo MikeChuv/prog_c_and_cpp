@@ -12,7 +12,10 @@
 
 int main(int argc, char* argv[]){
 	double a[nmax][nmax], b[nmax][nmax];
-	int rows_a, colls_a, rows_b, colls_b;
+	int rows_a = 0;
+	int	colls_a = 0;
+	int rows_b = 0;
+	int colls_b = 0;
 	int counted_vec[nmax];
 	int flag = 0;
 
@@ -34,71 +37,86 @@ int main(int argc, char* argv[]){
 
 
 	if( (sa || sr) && !flag ){
-		// статический массив
+		// static matrix
 		if (input(a, rows_a, colls_a, argv[1]) || input(b, rows_b, colls_b, argv[2])){
 			flag = 1;
 		}
 		else if(sa){
-			//static all
+			// static full
+			
+			// printing matrices to output file
 			print_static_matrix(a, rows_a, colls_a, argv[3], 'A');
 			print_static_matrix(b, rows_b, colls_b, argv[3], 'B');
 
+			// finding max in both matrices
 			double max_a = static_max_all(a, rows_a, colls_a);
 			double max_b = static_max_all(b, rows_b, colls_b);
-			printf("Max_a = %lf\n", max_a);
-			printf("Max_b = %lf\n", max_b);
+
+			// printing max values to output file with a message
+			message_with_double(max_a, "Max in A :", argv[3]);
+			message_with_double(max_b, "Max in B :", argv[3]);
+
 			if (max_a > max_b){
-				//	кол-во положительных в каждой строке в А
+				//	amount of positives in each row for matrix A
 				static_positive_count_all(a, rows_a, colls_a, counted_vec);
 				print_vector(counted_vec, rows_a, argv[3]);
 			}
 			else{
-				//	кол-во положительных в каждой строке в Б
+				//	amount of positives in each row for matrix B
 				static_positive_count_all(b, rows_b, colls_b, counted_vec);
 				print_vector(counted_vec, rows_b, argv[3]);
 			}
 		}
 		else{
 			//static rows
+			
+			// printing matrices to output file
 			print_static_matrix(a, rows_a, colls_a, argv[3], 'A');
 			print_static_matrix(b, rows_b, colls_b, argv[3], 'B');
 
 			double max_a = static_max_rows(a, rows_a, colls_a);
 			double max_b = static_max_rows(b, rows_b, colls_b);
-			printf("Max_a = %lf\n", max_a);
-			printf("Max_b = %lf\n", max_b);
+
+			message_with_double(max_a, "Max in A :", argv[3]);
+			message_with_double(max_b, "Max in B :", argv[3]);
 
 			if (max_a > max_b){
 				//	кол-во положительных в каждой строке в А
-				static_positive_count_rows(a, rows_a, colls_a, counted_vec);
-				print_vector(counted_vec, rows_a, argv[3]);
+				static_positive_count_rows(a, rows_a, colls_a, argv[3]);
 			}
 			else{
 				//	кол-во положительных в каждой строке в Б
-				static_positive_count_rows(b, rows_b, colls_b, counted_vec);
-				print_vector(counted_vec, rows_b, argv[3]);
+				static_positive_count_rows(b, rows_b, colls_b, argv[3]);
 			}
 
 		}
 			
 	}
+
 	else if( (da || dr) && !flag ){
-		// динамический массив
-		// input
+		// dynamic array
+		
+		// reading matrices from input files
 		double** matrix_a = dynamic_matrix_input(rows_a, colls_a, argv[1]);
 		double** matrix_b = dynamic_matrix_input(rows_b, colls_b, argv[2]);
 		
 		if(!matrix_a || !matrix_b){
 			flag = 1;
 		}
+
 		else if(da){
-			// full
+			// dynamic full
 			print_dynamic_matrix(matrix_a, rows_a, colls_a, argv[3], 'A');
 			print_dynamic_matrix(matrix_b, rows_b, colls_b, argv[3], 'B');
 
 			double max_a = dynamic_max_all(matrix_a, rows_a, colls_a);
 			double max_b = dynamic_max_all(matrix_b, rows_b, colls_b);
+
+			message_with_double(max_a, "Max in A :", argv[3]);
+			message_with_double(max_b, "Max in B :", argv[3]);
+
 			if(max_a > max_b){
+				// counting amount of positive numbers and putting them to a 1d array
 				dynamic_positive_count_all(matrix_a, rows_a, colls_a, counted_vec);
 				print_vector(counted_vec, rows_a, argv[3]);
 			}
@@ -106,27 +124,49 @@ int main(int argc, char* argv[]){
 				dynamic_positive_count_all(matrix_b, rows_b, colls_b, counted_vec);
 				print_vector(counted_vec, rows_b, argv[3]);
 			}
+
+
+			// freeing memory if its allocated
+			if(matrix_a) {
+				free_memory(matrix_a, rows_a, colls_a);
+			}
+			if(matrix_b) {
+				free_memory(matrix_b, rows_b, colls_b);
+			}
+
+
 		}
+
 		else{
+			// dynamic rows
 
 			print_dynamic_matrix(matrix_a, rows_a, colls_a, argv[3], 'A');
 			print_dynamic_matrix(matrix_b, rows_b, colls_b, argv[3], 'B');
+
 			double max_a = dynamic_max_rows(matrix_a, rows_a, colls_a);
 			double max_b = dynamic_max_rows(matrix_b, rows_b, colls_b);
-			// rows
+
+			message_with_double(max_a, "Max in A :", argv[3]);
+			message_with_double(max_b, "Max in B :", argv[3]);
+
 			if(max_a > max_b){
-				dynamic_positive_count_rows(matrix_a, rows_a, colls_a, counted_vec);
-				print_vector(counted_vec, rows_a, argv[3]);
+				dynamic_positive_count_rows(matrix_a, rows_a, colls_a, argv[3]);
 			}
 			else{
-				dynamic_positive_count_rows(matrix_a, rows_a, colls_a, counted_vec);
-				print_vector(counted_vec, rows_a, argv[3]);
-	
+				dynamic_positive_count_rows(matrix_b, rows_b, colls_b, argv[3]);	
 			}
+
+			if(matrix_a) {
+				free_memory(matrix_a, rows_a, colls_a);
+			}
+			if(matrix_b) {
+				free_memory(matrix_b, rows_b, colls_b);
+			}
+
 		}
-		printf("Dynamic\n");
 	}
 	else{
+		// message if user typed wrong kwy
 		printf("Wrong key\n");
 		flag = 1;
 	}

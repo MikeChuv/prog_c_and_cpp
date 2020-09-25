@@ -2,51 +2,55 @@
 #include <stdlib.h>
 
 
-// ввод массива
+// matrix input
 double** dynamic_matrix_input(int& rows, int& colls, char *filename){
 	FILE *input_file;
 	int flag = 0;
 	double **return_value = nullptr;
 	double **arr = nullptr;
 
+
 	if ((input_file = fopen(filename, "r")) == NULL){
 		printf("Невозможно открыть файл '%s'\n", filename);
 		flag = 1;
 	}
 
-	if (!flag && (fscanf(input_file, "%d", &rows) < 1) && (fscanf(input_file, "%d", &colls) < 1) ){
+	else if ( fscanf(input_file, "%d", &rows) < 1 || fscanf(input_file, "%d", &colls) < 1){
 		printf("Ошибка чтения из файла '%s'\n", filename);
 		fclose(input_file);
 		flag = 1;
 	}
 
-	if (!flag && ((rows <= 0) || (colls <= 0)) ){
+	else if ( (rows <= 0) || (colls <= 0) ){
 		printf("Неверно задан размер массива. Допустимо от 1. Файл: '%s'\n", filename);
 		fclose(input_file);
 		flag = 1;
 	}
 
-	if (!flag){
+	else{
+
+		// allocating memory
 		arr = new double* [rows];
-		for(int i = 0; i < colls; i++){
+		for(int i = 0; i < rows; i++){
 			arr[i] = new double [colls];
 		}
-	}
-	for (int i = 0; (i < rows) && !flag; i++){
-		for(int j = 0; (j < colls) && !flag; j++){
-			if (fscanf(input_file, "%lf", &arr[i][j]) < 1){
-				printf("Ошибка чтения из файла '%s'\n", filename);
-				fclose(input_file);
-				flag = 1;
-				for(int k = 0; k < colls; k++){
-					delete[] arr[k];
+	
+		for (int i = 0; (i < rows) && !flag; i++){
+			for(int j = 0; (j < colls) && !flag; j++){
+				if (fscanf(input_file, "%lf", &arr[i][j]) < 1){
+					printf("Ошибка чтения из файла '%s'\n", filename);
+					fclose(input_file);
+					flag = 1;
+					for(int k = 0; k < colls; k++){
+						delete[] arr[k];
 
+					}
+					delete [] arr;
 				}
-				delete [] arr;
 			}
 		}
-	}
 
+	}
 	if(flag){
 		return_value = nullptr;
 	}
@@ -68,7 +72,7 @@ int print_dynamic_matrix(double** arr, int rows, int colls, char *filename, char
 		flag = 1;
 	}
 	else {
-		fprintf(output_file, "%c: \n", name);
+		fprintf(output_file, "Matrix %c: \n", name);
 		for(int i = 0; i < rows; i++){
 			for(int j = 0; j < colls; j++){
 				fprintf(output_file, "%5.2lf ", arr[i][j]);
@@ -81,6 +85,12 @@ int print_dynamic_matrix(double** arr, int rows, int colls, char *filename, char
 	fclose(output_file);
 	return flag;
 }
+
+
+
+// ----- Finding max value -----
+//
+
 
 double dynamic_max_all(double** arr, int rows, int colls){
 	double max = arr[0][0];
@@ -117,6 +127,11 @@ double dynamic_max_rows(double** arr, int rows, int colls){
 }
 
 
+
+// -----Counting positives-----
+//
+
+
 void dynamic_positive_count_all(double** arr, int rows, int colls, int vec[]){
 	for(int i = 0; i < rows; i++){
 		int counter = 0;
@@ -140,12 +155,27 @@ static int positive_in_row(double vec[], int colls){
 	return counter;
 }
 
-void dynamic_positive_count_rows(double** arr, int rows, int colls, int vec[]){
+void dynamic_positive_count_rows(double** arr, int rows, int colls, char* filename){
+	FILE* output_file;
+	output_file = fopen(filename, "a");
+	fprintf(output_file, "\n");
 	for(int i = 0; i < rows; i++){
-		vec[i] = positive_in_row(arr[i], colls);
+		int counted = positive_in_row(arr[i], colls);
+		fprintf(output_file, "Positives in row %d : %2d\n", i, counted);
 	}
+	fclose(output_file);
 	return;
 }
 
 
 
+
+
+
+
+void free_memory(double**& arr, int rows, int colls){
+	for(int i = 0; i < rows; i++){
+		delete [] arr[i];
+	}
+	delete [] arr; 
+}
