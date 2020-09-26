@@ -132,7 +132,9 @@ double dynamic_max_rows(double** arr, int rows, int colls){
 //
 
 
-void dynamic_positive_count_all(double** arr, int rows, int colls, int vec[]){
+void dynamic_positive_count_all(double** arr, int rows, int colls, int vec[], char* filename){
+	FILE* output_file;
+	output_file = fopen(filename, "a");
 	for(int i = 0; i < rows; i++){
 		int counter = 0;
 		for(int j = 0; j < colls; j++){
@@ -141,7 +143,9 @@ void dynamic_positive_count_all(double** arr, int rows, int colls, int vec[]){
 			}
 		}
 		vec[i] = counter;
+		fprintf(output_file, "Positives in row %d : %d\n", i, counter);
 	}
+	fclose(output_file);
 	return;
 }
 

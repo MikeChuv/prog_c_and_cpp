@@ -10,7 +10,6 @@ Matrix B:
 
 Max in A :  8.00
 Max in B : 13.00
-
-Positives in row 0 :  1
-Positives in row 1 :  1
-Positives in row 2 :  2
+Positives in row 0 : 1
+Positives in row 1 : 1
+Positives in row 2 : 2

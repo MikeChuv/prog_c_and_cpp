@@ -59,12 +59,12 @@ int main(int argc, char* argv[]){
 			if (max_a > max_b){
 				//	amount of positives in each row for matrix A
 				static_positive_count_all(a, rows_a, colls_a, counted_vec);
-				print_vector(counted_vec, rows_a, argv[3]);
+				//print_vector(counted_vec, rows_a, argv[3]);
 			}
 			else{
 				//	amount of positives in each row for matrix B
 				static_positive_count_all(b, rows_b, colls_b, counted_vec);
-				print_vector(counted_vec, rows_b, argv[3]);
+				//print_vector(counted_vec, rows_b, argv[3]);
 			}
 		}
 		else{
@@ -117,12 +117,12 @@ int main(int argc, char* argv[]){
 
 			if(max_a > max_b){
 				// counting amount of positive numbers and putting them to a 1d array
-				dynamic_positive_count_all(matrix_a, rows_a, colls_a, counted_vec);
-				print_vector(counted_vec, rows_a, argv[3]);
+				dynamic_positive_count_all(matrix_a, rows_a, colls_a, counted_vec, argv[3]);
+				//print_vector(counted_vec, rows_a, argv[3]);
 			}
 			else{
-				dynamic_positive_count_all(matrix_b, rows_b, colls_b, counted_vec);
-				print_vector(counted_vec, rows_b, argv[3]);
+				dynamic_positive_count_all(matrix_b, rows_b, colls_b, counted_vec, argv[3]);
+				//print_vector(counted_vec, rows_b, argv[3]);
 			}
 
 
