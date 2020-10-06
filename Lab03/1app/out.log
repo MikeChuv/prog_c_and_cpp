@@ -1,0 +1,41 @@
+Binary created
+Data from binary written to out.txt
+Selected records:
+3
+4
+Records in binary: 7
+first(3) =    3    9
+second(4) =  723  984
+
+Before swapping:
+ : |    3 |    5 |
+ : |    1 |    2 |
+ : |   32 |    9 |
+__________________
+>: |    3 |    9 |
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+__________________
+>: |  723 |  984 |
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+ : |   85 |   91 |
+ : |  968 |   32 |
+
+
+
+After swapping:
+ : |    3 |    5 |
+ : |    1 |    2 |
+ : |   32 |    9 |
+__________________
+>: |  723 |  984 |
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+__________________
+>: |    3 |    9 |
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+ : |   85 |   91 |
+ : |  968 |   32 |
+
+
+Swapped
+Binary with swapped written to out.txt
+Exitting..
