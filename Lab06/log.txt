@@ -1,0 +1,4 @@
+Before : 	X = 00000932
+Invalid N or P 
+ N = 54673 
+ P = 35

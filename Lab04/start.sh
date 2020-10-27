@@ -1,3 +1,3 @@
-g++ main.cpp 
-valgrind ./a.out a.txt
+g++ source.cpp 
+ ./a.out a.txt
 echo Exit code: $?

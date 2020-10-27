@@ -1,7 +1,7 @@
 #include "unit.h"
 
 double userfunction(double a){
-	return log(abs(a)) + sin(2 * a) - 1;
+	return (a == 0) ? 0 : log(abs(a)) + sin(2 * a) - 1;
 }
 
 
