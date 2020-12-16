@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-volatile int capacity = 10;
+volatile int capacity = 20;
 
 int compare(char* mystring, char* sub1){
 	int result = 0;
@@ -29,35 +29,44 @@ char* readfn(FILE* input, int mode, int &chars){
 	return mystring;
 }
 
-
-void s2_to_ms(char*& mystring, char* subs2, int& mss, int s1s, int s2s, int i){
-	for(int j = mss; j >= i + s1s; j--) mystring[j + s2s] = mystring[j]; 
-	mss += s2s;
-	for(int j = 0; j < s2s; j++) mystring[i + s1s + j] = subs2[j];
+// рекурсивно перемещаем хвост mode = 1, и вставляем подстроку mode = 0;
+void change(char*& mystring, int offset, char* subs2, int s1s, int s2s, int j, int mode){
+	if (   (mode && (j >= offset + s1s)) || (!mode && (j < s2s))   ){
+		int start = mode ? j + s2s : j + s1s + offset;
+		mystring[start] = mode ? mystring[j--] : subs2[j++];
+		change(mystring, offset, subs2, s1s, s2s, j, mode);
+	}
 	return;
 }
 
-void compare_loop(char*& mystring, char* subs1, char* subs2, int& mss, int s1s, int s2s, int& size){
-	int i = 0; int shift = 0;
-	while(mystring[i] != '\0') {
-		shift = compare(mystring + i, subs1); 
+// вставка подстроки
+void s2_to_ms(char*& mystring, int offset, char* subs2, int& mss, int s1s, int s2s){
+	change(mystring, offset, subs2, s1s, s2s, mss, 1);	
+	mss += s2s;
+	change(mystring, offset, subs2, s1s, s2s, 0, 0);
+	return;
+}
+
+void compare_loop(char*& mystring, int offset, char* subs1, char* subs2, int& mss, int s1s, int s2s, int& size){
+	int shift = 0;
+	if(*mystring != '\0' && offset <= mss) {
+		shift = compare(mystring + offset, subs1); 
 		if ( (shift - 1) == s1s){
-			if (size - mss > s2s) s2_to_ms(mystring, subs2, mss, s1s, s2s, i);
+			if (size - mss > s2s) s2_to_ms(mystring, offset, subs2, mss, s1s, s2s);
 			else{
 				mystring = resize(mystring);
 				size = capacity;
-				s2_to_ms(mystring, subs2, mss, s1s, s2s, i);
+				s2_to_ms(mystring, offset, subs2, mss, s1s, s2s);
 			}
-			i += shift + s2s;
+			compare_loop(mystring, offset + shift + s2s + 1, subs1, subs2, mss, s1s, s2s, size);
 		}
-		else{ i += shift; }
+		else compare_loop(mystring, offset + shift, subs1, subs2, mss, s1s, s2s, size);
 	}
 	return;
 }
 
 void print_string(char* mystring){
-	int i = 0;
-	while(mystring[i] != '\0') printf("%c", mystring[i++]);
+	for(int i = 0; mystring[i] != '\0'; i++) printf("%c", mystring[i]);
 	printf("\n");
 	return;
 }
@@ -71,7 +80,7 @@ int main(int argc, char* argv[]){
 	char* subs1 = readfn(input_file, 0, s1s);
 	printf("Subs 2 = ");
 	char* subs2 = readfn(input_file, 0, s2s);
-	compare_loop(mystring, subs1, subs2, mss, s1s, s2s, reserved);
+	compare_loop(mystring, 0, subs1, subs2, mss, s1s, s2s, reserved);
 	print_string(mystring);
 	fclose(input_file);
 	delete [] mystring;

@@ -1,3 +1,3 @@
-g++ source.cpp
+g++ main.cpp
 ./a.out
 echo Exit code: $?

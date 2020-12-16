@@ -1,7 +1,21 @@
+// Написать функцию, которая в числе x устанавливает 1 в n бит, находящихся слева от позиции p, остальные биты остаются без изменения. 
+
 #include <stdio.h>
 
+
+const unsigned char size = sizeof(unsigned int) * 8;
+
+
+int check_input(int n, int p){
+	return n >= size || n < 0 || p >= size || p < 0 || p < n;
+}
+
+unsigned int apply_mask(unsigned int x, int n, int p){
+	unsigned int mask = 1;
+	return x | ((mask << n) - 1) << p;
+}
+
 int main(int argc, char* argv[]){
-	const unsigned char size = sizeof(unsigned int) * 8;
 	FILE* logfile = fopen(argv[1], "w");
 	unsigned int x;
 	int n, p;
@@ -13,16 +27,15 @@ int main(int argc, char* argv[]){
 	scanf("%d", &n);
 	printf("P = ");
 	scanf("%d", &p);
-		
+	
 	fprintf(logfile, "Before : \tX = %08x\n", x);
-	if ( n > size || n < 0 || p > size || p < 0 || p < n){
+	if (check_input(n, p)){
 		flag = 1;
 		fprintf(logfile, "Invalid N or P \n N = %d \n P = %d\n", n, p);
 	}
 	else{
-		unsigned int mask = 1;
-		fprintf(logfile, "After : \tX = %08x\n", x | ((mask << n) - 1) << (32 - p));
-
+		x = apply_mask(x, n, p);
+		fprintf(logfile, "After : \tX = %08x\n", x);
 	}
 	return flag;
 }
