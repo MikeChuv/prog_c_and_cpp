@@ -1,3 +1,4 @@
 *.o
 *.s
 *.out
+/Lab12/.vscode/*
